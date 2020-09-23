@@ -15,7 +15,7 @@ function random(min, max) {
   }
 
 // This handles the properties of the balls
-  function Ball(x, y, velX, velY, color, size) {
+  function Ball(x, y, velX, velY, color, size, count) {
     
     this.x = x; // The horizontal and vertical coordinates where the ball starts on the screen. 
     this.y = y; // This can range between 0 (top left hand corner) to the width and height of the browser viewport (bottom right hand corner).
@@ -23,6 +23,7 @@ function random(min, max) {
     this.velY = velY; // in real terms these values are regularly added to the x/y coordinate values when we animate the balls, to move them by this much on each frame.
     this.color = color; //each ball gets a color.
     this.size = size; // each ball gets a size — this is its radius, in pixels.
+    this.count = count;
   }
 
 // tell the ball to draw itself onto the screen, by calling a series of members of the 2D canvas context we defined earlier (ctx).
@@ -30,6 +31,9 @@ function random(min, max) {
     ctx.beginPath(); // to state that we want to draw a shape on the paper.
     ctx.fillStyle = this.color; // to define what color we want the shape to be — we set it to our ball's color property.
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI); // method to trace an arc shape on the paper.
+    ctx.font = "50px serif";
+    ctx.textAlign = "center";
+    ctx.fillText(this.count, this.x, this.y - 20);
     ctx.fill(); // which basically states "finish drawing the path we started with beginPath(), and fill the area it takes up with the color we specified earlier in fillStyle."
   }
 
@@ -66,8 +70,10 @@ function random(min, max) {
         const dy = this.y - balls[j].y;
         const distance = Math.sqrt(dx * dx + dy * dy);
   
+        // now changes size of ball when collision is detected
         if (distance < this.size + balls[j].size) {
-          balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) +')';
+          balls[j].size = this.size = random(10,30);
+          balls[j].count = this.count++;
         }
       }
     }
@@ -85,15 +91,14 @@ while (balls.length < 25) {
     random(0 + size,height - size),
     random(-7,7),
     random(-7,7),
-    'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
-    size
+    'rgb(' + 255 + ',' + 130 + ',' + 0 +')', size, 0
   );
 
   balls.push(ball);
 }
 
 function loop() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+    ctx.fillStyle = 'rgba(88, 89, 91)';
     ctx.fillRect(0, 0, width, height);
   
     for (let i = 0; i < balls.length; i++) {
