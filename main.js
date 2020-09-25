@@ -72,7 +72,7 @@ function random(min, max) {
   
         // now changes size of ball when collision is detected
         if (distance < this.size + balls[j].size) {
-          balls[j].size = this.size = random(10,30);
+          balls[j].size = this.size = random(10,20);
           balls[j].count = this.count++;
         }
       }
